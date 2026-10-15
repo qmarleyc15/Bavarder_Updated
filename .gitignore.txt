@@ -1,0 +1,6 @@
+data/
+Transcripts_ex_test/
+*.trs
+conversation_pairs*.json
+context_pairs*.json
+__pycache__/

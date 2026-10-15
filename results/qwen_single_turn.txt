@@ -1,0 +1,36 @@
+Run: Qwen2.5-1.5B-Instruct + LoRA, single-turn (child line -> adult reply)
+Data: 4,528 pairs (parser with hyphen fix, near-echo filter at 0.7, repetition cap at 20)
+Split: random 90/10 -> 4,075 train / 453 test
+Training: 3 epochs, LoRA r=16, alpha=32, lr 2e-4, fp16, Colab T4
+Trainable parameters: 4,358,144 of 1,548,072,448 (0.28%)
+
+Epoch   Train loss   Validation loss
+1            2.2972         2.2564
+2            2.0085         2.1667
+3            1.8880         2.1631
+
+Held-out loss: 2.163
+Held-out perplexity: 8.70
+
+Sample generations (sampled with temperature 0.7, top_p 0.9, repetition_penalty 1.1;
+no fixed seed, so outputs vary between runs)
+
+IN   : Bonjour, comment ça va ?
+BASE : Bonjour! Je vais bien, merci pour votre question. Comment puis-je vous aider aujourd'hui ?
+TUNED: tu crois pas que c'est possible de rêver d'une réalité où on se croit dans sa vie ?
+
+IN   : Qu'est-ce que tu fais aujourd'hui ?
+BASE : Je joue aux jeux ! Je peux aussi chanter des chansons, jouer des mots ou raconter des histoires si tu veux.
+TUNED: eh oui je suis allée à la bibliothèque je m'entraine pour le piano hein ? et toi ?
+
+IN   : J'ai faim.
+BASE : Je comprends, mon chéri. Nous allons préparer une petite collation rapide. Quel est ton goûter préféré ?
+TUNED: tu as faim ? d'accord donc je m'entend pas avec vous alors hein ? et puis on a dit que les animaux ils pensaient pas ?
+
+IN   : Pourquoi le ciel est bleu ?
+BASE : Le ciel est bleu parce que la lumière du soleil, quand elle atteint notre planète, partage une partie de cette lumière avec l'air qu'elle traverse. [truncated]
+TUNED: d'accord d'accord donc on sait pas pourquoi il est rouge hein ?
+
+IN   : Tu veux jouer avec moi ?
+BASE : Oui, je suis ici pour jouer avec toi ! Il y a tellement de jeux que l'on pourrait faire ensemble. Que voudrais-tu que nous fassions aujourd'hui?
+TUNED: d'accord tu as une petite arme là ?

@@ -1,0 +1,43 @@
+Run: BARThez (moussaKam/barthez) + LoRA, single-turn (child line -> adult reply)
+Data: 4,331 pairs (near-echo filter at 0.7). Built BEFORE the hyphen fix and the
+      repetition cap, so the text still has hyphen-corruption artifacts and a
+      repeated adult phrase ("questions que vous n'osez pas poser")
+Split: random 90/10 -> 3,897 train / 434 test
+Training: 8 epochs, LoRA r=16, alpha=32, dropout 0.05 on q_proj/v_proj,
+          lr 3e-4, batch 16, fp16, Colab T4
+Trainable parameters: 884,736 of 140,106,240 (0.63%)
+
+Epoch   Train loss   Validation loss
+1       2.9105       2.6049
+2       2.7816       2.5145
+3       2.6499       2.4733
+4       2.5930       2.4324
+5       2.5485       2.4199
+6       2.6166       2.4001
+7       2.5303       2.3963
+8       2.5380       2.3907
+
+Held-out loss: 2.391
+Held-out perplexity: 10.92
+
+Sample generations (beam search, 4 beams, no_repeat_ngram_size=3,
+encoder_no_repeat_ngram_size=2 to block copying phrases from the input)
+
+IN : Bonjour, comment ça va ?
+OUT: d'accord et toi tu crois que c'est un rêve ? tu crois qu'il y a quelque chose qui se passe dans ta tête ? et toi ? tu penses à quoi ?
+
+IN : Qu'est-ce que tu fais aujourd'hui ?
+OUT: d'accord et ce qu'il y a des questions que vous n'osez pas poser à vos enfants ou à vos parents ou à votre famille ou vos amis ou votre famille ?
+
+IN : J'ai faim.
+OUT: tu as faim ?
+
+IN : Pourquoi le ciel est bleu ?
+OUT: d'accord donc c'est vrai qu'il y a beaucoup de différences entre les deux
+
+IN : Tu veux jouer avec moi ?
+OUT: d'accord et toi tu as envie d'avoir un petit garçon avec qui tu as un petit peu d'imagination
+
+Note: with default beam decoding, earlier runs mostly copied the input
+(e.g. "Pourquoi le ciel est bleu ?" -> "pourquoi le ciel est bleu ?").
+Blocking copied phrases produced fluent but off-topic replies.

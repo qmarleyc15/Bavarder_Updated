@@ -1,0 +1,6 @@
+torch
+transformers<5
+peft
+datasets
+accelerate
+sentencepiece
